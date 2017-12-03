@@ -136,7 +136,7 @@ void Matrix::printMatrix() {
 	}
 	std::cout << std::endl << std::endl;
 }
-Vector Matrix::getPosVect(){
+Vector Matrix::getPosVect() {
 	Vector v;
 	v.x = mat[0][3];
 	v.y = mat[1][3];
@@ -144,10 +144,31 @@ Vector Matrix::getPosVect(){
 	return v;
 }
 
-void Matrix::copy(Matrix from){
-	for (int i =0; i < 4; i++){
-		for (int j = 0; j < 4; j++){
+void Matrix::copy(Matrix from) {
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
 			mat[i][j] = from.mat[i][j];
 		}
 	}
+}
+
+void Matrix::ctm_multiply(){
+	GLfloat M[16];
+	M[0] = mat[0][0];
+	M[1] = mat[1][0];
+	M[2] = mat[2][0];
+	M[3] = 0;
+	M[4] = mat[0][1];
+	M[5] = mat[1][1];
+	M[6] = mat[2][1];
+	M[7] = 0;
+	M[8] = mat[0][2];
+	M[9] = mat[1][2];
+	M[10] = mat[2][2];
+	M[11] = 0;
+	M[12] = mat[0][3];
+	M[13] = mat[1][3];
+	M[14] = mat[2][3];
+	M[15] = 1;
+	glMultMatrixf(M);
 }

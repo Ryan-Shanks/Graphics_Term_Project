@@ -72,25 +72,7 @@ void Shape::scale_change(GLfloat x) {
  * Shape::ctm_multiply() multiply this matrix to openGL current matrix
  */
 void Shape::ctm_multiply() {
-	GLfloat M[16];
-	M[0] = MC.mat[0][0];
-	M[1] = MC.mat[1][0];
-	M[2] = MC.mat[2][0];
-	M[3] = 0;
-	M[4] = MC.mat[0][1];
-	M[5] = MC.mat[1][1];
-	M[6] = MC.mat[2][1];
-	M[7] = 0;
-	M[8] = MC.mat[0][2];
-	M[9] = MC.mat[1][2];
-	M[10] = MC.mat[2][2];
-	M[11] = 0;
-	M[12] = MC.mat[0][3];
-	M[13] = MC.mat[1][3];
-	M[14] = MC.mat[2][3];
-	M[15] = 1;
-	glMultMatrixf(M);
-
+	MC.ctm_multiply();
 }
 void Shape::drawAxis(){
 	glColor3f(1,0,0);
@@ -124,5 +106,11 @@ void Shape::rotate_relative(double x0, double y0, double z0, double rx, double r
     MC.mat[2][3] = v[2]+z0;
     MC.mat[3][3] = 1;
     delete m;
+}
+
+void Shape::scale(GLfloat sx, GLfloat sy, GLfloat sz) {
+	MC.mat[0][0] *= sx;
+	MC.mat[1][1] *= sy;
+	MC.mat[2][2] *= sz;
 }
 

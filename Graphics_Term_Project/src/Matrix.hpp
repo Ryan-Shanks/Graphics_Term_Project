@@ -26,6 +26,7 @@ public:
 	void printMatrix();
 	Vector getPosVect();
 	void copy(Matrix from);
+	void ctm_multiply();
 };
 
 #endif

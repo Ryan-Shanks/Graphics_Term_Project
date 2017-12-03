@@ -6,7 +6,7 @@
  */
 #ifndef CMENUHANDLER
 #define CMENUHANDLER
-#include "World.hpp"
+#include "Universe.hpp"
 enum Coordinate {
 	MODEL, WORLD, VIEW, LIGHT
 };
@@ -25,29 +25,13 @@ Coordinate coordinate = MODEL;
 LightOperation lightOperation = L_POINT_INTENSITY;
 
 //Declare a world containing all objects to draw.
-World *myWorld;
-
-void MCTransMenu(GLint transOption) {
-	myWorld->setWorldState(TEXTURED_CUBE);
-	Operation a[] = { ROTX, ROTY, ROTZ, SCALE };
-	type = a[transOption - 1];
-	coordinate = MODEL;
-	glutPostRedisplay();
-}
-
-void WCTransMenu(GLint transOption) {
-	myWorld->setWorldState(TEXTURED_CUBE);
-	coordinate = WORLD;
-	Operation a[] = { ROTX, ROTY, ROTZ, TX, TY, TZ };
-	type = a[transOption - 1];
-	glutPostRedisplay();
-}
+Universe *myUniverse;
 
 void mainMenu(GLint option) {
 	switch (option) {
 	case 1:
-		delete myWorld;
-		myWorld = new World();
+		delete myUniverse;
+		myUniverse = new Universe();
 		type = SCALE;
 		coordinate = MODEL;
 		break;
@@ -73,41 +57,8 @@ void LightMenu(GLint option) {
 	glutPostRedisplay();
 }
 
-void A4Menu(GLint opt) {
-	WorldState a[] = { CP_SELECT, BEZIER_CURVE_GEN, ROT_SURFACE_GEN, GL_SHADING, GLSL_SHADING, SOLAR_SYSTEM };
-	if (opt == 1){
-		myWorld->clearCP();
-	}
-	myWorld->setWorldState(a[opt - 1]);
-	glutPostRedisplay();
-}
-void SMenu(int o){
-	myWorld->stepRotation = o;
-	myWorld->remakeCurve();
-}
-void RMenu(int o){
-	myWorld->totalRotation = o;
-	myWorld->remakeCurve();
-}
-void TMenu(int o){
-	myWorld->bezCurveRes = o;
-	myWorld->remakeCurve();
-}
 void createMenu() {
-	GLint WCTrans_Menu, VCTrans_Menu, MCTrans_Menu, Light_Menu, A4_Menu, R_Menu, T_Menu, S_Menu;
-	MCTrans_Menu = glutCreateMenu(MCTransMenu);
-	glutAddMenuEntry(" Rotate x ", 1);
-	glutAddMenuEntry(" Rotate y ", 2);
-	glutAddMenuEntry(" Rotate z", 3);
-	glutAddMenuEntry(" Scale", 4);
-
-	WCTrans_Menu = glutCreateMenu(WCTransMenu);
-	glutAddMenuEntry(" Rotate x ", 1);
-	glutAddMenuEntry(" Rotate y ", 2);
-	glutAddMenuEntry(" Rotate z", 3);
-	glutAddMenuEntry(" Translate x ", 4);
-	glutAddMenuEntry(" Translate y ", 5);
-	glutAddMenuEntry(" Translate z", 6);
+	GLint VCTrans_Menu, Light_Menu;
 
 	VCTrans_Menu = glutCreateMenu(VCTransMenu);
 	glutAddMenuEntry(" Rotate x ", 1);
@@ -134,34 +85,6 @@ void createMenu() {
 	glutAddMenuEntry(" Point Light Reflection Rd", 8);
 	glutAddMenuEntry(" Ambient Reflection Ra", 9);
 
-	//curve configurations
-	R_Menu = glutCreateMenu(RMenu);
-	glutAddMenuEntry(" 45", 45);
-	glutAddMenuEntry(" 90", 90);
-	glutAddMenuEntry(" 135", 135);
-	glutAddMenuEntry(" 180", 180);
-	glutAddMenuEntry(" 225", 225);
-	glutAddMenuEntry(" 270", 270);
-	glutAddMenuEntry(" 315", 315);
-	glutAddMenuEntry(" 360", 360);
-
-	S_Menu = glutCreateMenu(SMenu);
-	glutAddMenuEntry(" 1", 1);
-	glutAddMenuEntry(" 5", 5);
-	glutAddMenuEntry(" 10", 10);
-	glutAddMenuEntry(" 15", 15);
-
-	T_Menu = glutCreateMenu(TMenu);
-	glutAddMenuEntry(" 10", 10);
-	glutAddMenuEntry(" 15", 15);
-	glutAddMenuEntry(" 20", 20);
-	glutAddMenuEntry(" 25", 25);
-	glutAddMenuEntry(" 200", 200);
-
-	A4_Menu = glutCreateMenu(A4Menu);
-	glutAddSubMenu(" R", R_Menu);
-	glutAddSubMenu(" S", S_Menu);
-	glutAddSubMenu(" T", T_Menu);
 	glutAddMenuEntry(" Control Point Selection", 1);
 	glutAddMenuEntry(" Bezier Curve Generation", 2);
 	glutAddMenuEntry(" 3D Bezier Mesh", 3);
@@ -171,11 +94,8 @@ void createMenu() {
 
 	glutCreateMenu(mainMenu);      // Create main pop-up menu.
 	glutAddMenuEntry(" Reset ", 1);
-	glutAddSubMenu(" Model Transformations ", MCTrans_Menu);
-	glutAddSubMenu(" WC Transformations ", WCTrans_Menu);
 	glutAddSubMenu(" View Transformations ", VCTrans_Menu);
 	glutAddSubMenu(" Light Transformations", Light_Menu);
-	glutAddSubMenu(" A4 Menu", A4_Menu);
 	glutAddMenuEntry(" Quit", 3);
 }
 
