@@ -11,6 +11,7 @@
 #include <vector>
 #include "BezierCurve.hpp"
 #include "Cylinder.hpp"
+#include "Cone.hpp"
 
 class Universe {
 public:

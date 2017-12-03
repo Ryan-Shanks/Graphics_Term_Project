@@ -49,7 +49,7 @@ void Universe::draw_world() {
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, matDif);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, matSpec);
 	glMaterialfv(GL_FRONT, GL_EMISSION, matEm);
-	Cylinder c;
+	Cone c;
 	c.draw();
 	glFlush();
 	glutSwapBuffers();
