@@ -96,3 +96,12 @@ Vector Vector::averageVect(Vector other){
 	ret.z = (z + other.z)/2;
 	return ret;
 }
+/**
+ * currently used by the prism class, this will take 2 2d points and create a normal vector
+ */
+void Vector::setAs2DNormal(Point p1, Point p2){
+	x = p1.y - p2.y;
+	y = -(p1.x - p2.x);
+	z = 0;
+	normalize();
+}

@@ -22,6 +22,7 @@ class Vector {
 	GLfloat magnitude();
 	void add(Vector other);
 	Vector averageVect(Vector other);
+	void setAs2DNormal(Point p1, Point p2);
 };
 
 #endif

@@ -14,6 +14,9 @@ Prism::Prism(std::vector<Point> points, GLfloat height) {
 	this->points = points;
 	for (int i = 0; i < points.size(); i++) {
 		points[i].z = 0;
+		Vector n = Vector();
+		n.setAs2DNormal(points[i],points[wrapPoints(i+1)]);
+		normalsOnSideFaces.push_back(n);
 	}
 	this->height = height;
 }
@@ -41,10 +44,17 @@ void Prism::draw() {
 	glEnd();
 	//now connect the 2 planes with a quad strip
 	glBegin(GL_QUAD_STRIP);
-	for (int i =0; i < points.size(); i++){
-		glVertex3f(points[i].x, points[i].y, height);
-		glVertex2f(points[i].x, points[i].y);
+	for (int i =0; i <= points.size(); i++){
+		GLfloat n[4];
+		normalsOnSideFaces[wrapPoints(i)].build4tuple(n);
+		glNormal3fv(n);
+		glVertex3f(points[wrapPoints(i)].x, points[wrapPoints(i)].y, height);
+		glVertex2f(points[wrapPoints(i)].x, points[wrapPoints(i)].y);
 	}
 	glEnd();
 	glPopMatrix();
+}
+
+int Prism::wrapPoints(int i){
+	return i % points.size();
 }
