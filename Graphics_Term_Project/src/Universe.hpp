@@ -24,9 +24,7 @@ public:
 	PointLightSource *lightSource;
 	void animateSolar();
 	GLint stepRotation, totalRotation, bezCurveRes; // Parameters to control the rotation and smoothness of the curve
-	void clearCP();
 private:
-	std::vector<Point*> controlPoints; // cp to generate the bezier curve
 	Sphere *sun, *moon, *earth; // shapes for the solar system
 	BezierCurve* curve;
 	PointLightSource *sunLight;

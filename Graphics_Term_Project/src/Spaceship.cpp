@@ -5,14 +5,14 @@
  *      Author: ryanw
  */
 
-#include "SpaceShip.hpp"
+#include "Spaceship.hpp"
 
-SpaceShip::SpaceShip() {
+Spaceship::Spaceship() {
 	// TODO Auto-generated constructor stub
 
 }
 
-SpaceShip::~SpaceShip() {
+Spaceship::~Spaceship() {
 	// TODO Auto-generated destructor stub
 }
 

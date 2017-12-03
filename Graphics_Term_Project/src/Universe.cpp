@@ -32,7 +32,6 @@ Universe::~Universe() {
 	delete sun;
 	delete earth;
 	delete moon;
-	controlPoints.clear();
 	delete myCamera;
 	delete lightSource;
 	delete sunLight;
@@ -40,7 +39,6 @@ Universe::~Universe() {
 
 void Universe::draw_world() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	GLfloat matAmb[] = { 0.2, .2, .2, 1.0 }; //ambient
 	GLfloat matDif[] = { 0.8, .8, 0.8, 1.0 }; //diffuse
 	GLfloat matSpec[] = { 0.0, 0.0, 0.0, 1.0 }; //specular
@@ -49,8 +47,7 @@ void Universe::draw_world() {
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, matDif);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, matSpec);
 	glMaterialfv(GL_FRONT, GL_EMISSION, matEm);
-	Cone c;
-	c.draw();
+
 	glFlush();
 	glutSwapBuffers();
 }
@@ -80,9 +77,5 @@ void Universe::animateSolar() {
 	glutTimerFunc(10, animateSolarHelper, (int) this);
 	end = GetTickCount();
 	glutPostRedisplay();
-}
-
-void Universe::clearCP() {
-	controlPoints.clear();
 }
 

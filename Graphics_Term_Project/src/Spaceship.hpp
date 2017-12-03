@@ -9,10 +9,10 @@
 #define SPACESHIP_HPP_
 #include "Shape.hpp"
 
-class SpaceShip : public Shape {
+class Spaceship : public Shape {
 public:
-	SpaceShip();
-	virtual ~SpaceShip();
+	Spaceship();
+	virtual ~Spaceship();
 };
 
 #endif /* SPACESHIP_HPP_ */
