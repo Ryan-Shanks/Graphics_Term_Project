@@ -5,6 +5,7 @@
 #include <GL/glut.h>
 #include "Point.hpp"
 #include "Vector.hpp"
+#include "Matrix.hpp"
 
 class Camera {
  public:
@@ -37,7 +38,7 @@ class Camera {
 	/*  */
 	void setProjectionMatrix();
 	Vector getViewVector();
-
+	void followShip(Matrix ship);
 };
 #endif
 

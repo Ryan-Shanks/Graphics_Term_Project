@@ -8,11 +8,18 @@
 #ifndef SPACESHIP_HPP_
 #define SPACESHIP_HPP_
 #include "Shape.hpp"
-
-class Spaceship : public Shape {
+#include "Cone.hpp"
+#include "Prism.hpp"
+#include "Cylinder.hpp"
+class Spaceship: public Shape {
 public:
 	Spaceship();
 	virtual ~Spaceship();
+	void draw();
+private:
+	Prism *leftWing, *rightWing;
+	Cylinder *body;
+	Cone *nose;
 };
 
 #endif /* SPACESHIP_HPP_ */

@@ -31,4 +31,5 @@ void Cylinder::draw(){
 	matFar.ctm_multiply();
 	gluDisk(quad, 0, 0.5, 50, 50);
 	glPopMatrix();
+	glPopMatrix();
 }

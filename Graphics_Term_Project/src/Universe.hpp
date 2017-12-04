@@ -12,11 +12,11 @@
 #include "BezierCurve.hpp"
 #include "Cylinder.hpp"
 #include "Cone.hpp"
+#include "Spaceship.hpp"
 
 class Universe {
 public:
 	Camera *myCamera;
-	Shape *cube; // cube to show texture mapping
 	Universe();
 	~Universe();
 	void draw_world(); // draw all objects in the world
@@ -24,11 +24,12 @@ public:
 	PointLightSource *lightSource;
 	void animateSolar();
 	GLint stepRotation, totalRotation, bezCurveRes; // Parameters to control the rotation and smoothness of the curve
+	Spaceship getShip();
 private:
 	Sphere *sun, *moon, *earth; // shapes for the solar system
 	BezierCurve* curve;
 	PointLightSource *sunLight;
-	std::vector<Shape*> objects;
+	Spaceship ship;
 };
 
 #endif

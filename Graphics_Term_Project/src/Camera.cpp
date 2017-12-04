@@ -82,3 +82,17 @@ Vector Camera::getViewVector() {
 	v.set(ref.x - eye.x, ref.y - eye.y, ref.z - eye.z);
 	return v;
 }
+/**
+ * make the camera face in the positive x direction and be just behind the ship
+ */
+void Camera::followShip(Matrix ship) {
+	GLfloat eye[] = { -4, 6, 0, 0 };
+	GLfloat up[] = { 0, 1, 0, 0 };
+	GLfloat look[] = { 3, 0.5, 0, 0 };
+	ship.multiply_vector(eye);
+	ship.multiply_vector(up);
+	ship.multiply_vector(look);
+	this->eye.set(eye[0], eye[1], eye[2]);
+	this->viewup.set(up[0], up[1], up[2]);
+	this->ref.set(look[0], look[1], look[2]);
+}

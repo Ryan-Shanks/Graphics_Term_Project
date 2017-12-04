@@ -5,7 +5,6 @@
 #include "Universe.hpp"
 
 Universe::Universe() {
-	cube = new Cube("earth.bmp", "draw.bmp", "mandrill.bmp", "moon.bmp", "red.bmp");
 	earth = new Sphere("earth.bmp", 201);
 	earth->translate(2, 0, 0);
 	earth->scale_change(-0.85);
@@ -23,12 +22,9 @@ Universe::Universe() {
 	totalRotation = 90;
 	stepRotation = 1;
 	bezCurveRes = 200;
-	objects.push_back(new Cube());
-	objects.push_back(new Cylinder());
 }
 
 Universe::~Universe() {
-	delete cube;
 	delete sun;
 	delete earth;
 	delete moon;
@@ -47,19 +43,21 @@ void Universe::draw_world() {
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, matDif);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, matSpec);
 	glMaterialfv(GL_FRONT, GL_EMISSION, matEm);
-
+	ship.draw();
+	lightSource->draw();
+	myCamera->followShip(ship.getMC());
 	glFlush();
 	glutSwapBuffers();
 }
 
 void Universe::normalizeAll() {
-	cube->normalize();
 	sun->normalize();
 	moon->normalize();
 	earth->normalize();
 	if (curve != NULL) {
 		curve->normalize();
 	}
+	ship.normalize();
 }
 void animateSolarHelper(int pointerToWorld) {
 	((Universe*) pointerToWorld)->animateSolar();
@@ -77,5 +75,9 @@ void Universe::animateSolar() {
 	glutTimerFunc(10, animateSolarHelper, (int) this);
 	end = GetTickCount();
 	glutPostRedisplay();
+}
+
+Spaceship Universe::getShip(){
+	return ship;
 }
 
