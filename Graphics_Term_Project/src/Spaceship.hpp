@@ -10,7 +10,7 @@
 #include "Shape.hpp"
 #include "Cone.hpp"
 #include "Prism.hpp"
-#include "Cylinder.hpp"
+#include "BezierCurve.hpp"
 #include "Camera.hpp"
 
 class Spaceship: public Shape {
@@ -22,11 +22,10 @@ public:
 	void down();
 	void left();
 	void right();
-	void tick();
+	void tick(DWORD ticks);
 private:
-	Prism *leftWing, *rightWing;
-	Cylinder *body;
-	Cone *nose;
+	Prism *leftUpperWing, *rightUpperWing, *leftLowerWing, *rightLowerWing;
+	BezierCurve *body;
 	GLfloat vy,vz;
 };
 

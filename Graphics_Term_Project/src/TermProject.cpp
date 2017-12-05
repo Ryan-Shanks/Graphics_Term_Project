@@ -92,10 +92,11 @@ int main(int argc, char** argv) {
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
 
 	glewInit();
 	GLuint SLProgramObject = InitShader("src/vertexshader.txt", "src/fragmentshader.txt");
-	glUseProgram(SLProgramObject);  // dont use the shader yet
+	glUseProgram(SLProgramObject);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

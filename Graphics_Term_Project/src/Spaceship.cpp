@@ -8,32 +8,37 @@
 #include "Spaceship.hpp"
 
 Spaceship::Spaceship() {
-	body = new Cylinder();
-	body->scale(1, 1, 3);
-	body->rotate_mc(0, 1, 0, 90);
+	vector<Point*> cp;
+	cp.push_back(new Point(3,0,0));
+	cp.push_back(new Point(1.5,1,0));
+	cp.push_back(new Point(0,0,0));
+	body = new BezierCurve(cp, 50,370,2);
+	body->setDrawingMode(GLSL_SHADE);
+	//body->rotate_mc(0, 1, 0, 90);
 	vector<Point> wingPoints;
 	wingPoints.push_back(Point(0.5, 0, 2));
 	wingPoints.push_back(Point(2, 0, 2));
-	wingPoints.push_back(Point(2, 0, 0.5));
-	wingPoints.push_back(Point(0.5, 0, 0.5));
+	wingPoints.push_back(Point(2, 0, 0));
+	wingPoints.push_back(Point(0.5, 0, 0));
 
 	// add the wings
-	rightWing = new Prism(wingPoints, 0.02);
-	leftWing = new Prism(wingPoints, 0.02);
-	leftWing->rotate(1, 0, 0, 180);
+	rightUpperWing = new Prism(wingPoints, 0.02);
+	leftUpperWing = new Prism(wingPoints, 0.02);
+	leftLowerWing = new Prism(wingPoints, 0.02);
+	rightLowerWing = new Prism(wingPoints, 0.02);
 
-	nose = new Cone();
-	nose->translate(0, 0, 3);
-	nose->rotate(0, 1, 0, 90);
+	rightLowerWing->rotate(1, 0, 0, 20);
+	leftLowerWing->rotate(1, 0, 0, 160);
+	leftUpperWing->rotate(1, 0, 0, 200);
+	rightUpperWing->rotate(1, 0, 0, -20);
 	vy = 0;
 	vz = 0;
 }
 
 Spaceship::~Spaceship() {
-	delete rightWing;
-	delete leftWing;
+	delete rightUpperWing;
+	delete leftUpperWing;
 	delete body;
-	delete nose;
 }
 
 void Spaceship::draw() {
@@ -54,25 +59,26 @@ void Spaceship::draw() {
 	ctm_multiply();
 	tilt.ctm_multiply();
 	body->draw();
-	leftWing->draw();
-	rightWing->draw();
-	nose->draw();
+	leftUpperWing->draw();
+	rightUpperWing->draw();
+	leftLowerWing->draw();
+	rightLowerWing->draw();
 	glPopMatrix();
 }
 
 void Spaceship::up() {
-	vy= 0.25;
+	vy= 0.00000000003;
 }
 void Spaceship::down() {
-	vy = -0.25;
+	vy = -0.00000000003;
 }
 void Spaceship::left() {
-	vz = -0.25;
+	vz = -0.00000000003;
 }
 void Spaceship::right() {
-	vz = 0.25;
+	vz = 0.00000000003;
 }
-void Spaceship::tick(){
+void Spaceship::tick(DWORD ticks){
 	if(mc.mat[1][3] > 3){
 		vy = 0;
 		mc.mat[1][3] = 3;
@@ -88,6 +94,5 @@ void Spaceship::tick(){
 		vz = 0;
 		mc.mat[2][3] = -3;
 	}
-	translate(0, vy, vz);
-	mc.printMatrix();
+	translate(0, vy * ticks, vz * ticks);
 }

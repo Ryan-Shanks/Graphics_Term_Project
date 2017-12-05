@@ -10,7 +10,7 @@ Camera::Camera() {
 
 void Camera::setDefaultCamera(void) { // make default camera
 	eye.x = -10, eye.y = 0, eye.z = 0.0;
-	ref.x = 1, ref.y = 0, ref.z = 0.0;
+	ref.x = 10, ref.y = 0, ref.z = 0.0;
 	viewup.x = 0.0, viewup.y = 1.0, viewup.z = 0.0;
 	aspect = 1.0, viewAngle = 40.0, nearDist = 0.1, farDist = 10000.0;
 }
@@ -79,29 +79,3 @@ Vector Camera::getViewVector() {
 	v.set(ref.x - eye.x, ref.y - eye.y, ref.z - eye.z);
 	return v;
 }
-///**
-// * make the camera face in the positive x direction and be just behind the ship
-// */
-//void Camera::followShip(Matrix ship) {
-//	GLfloat eye[] = { -4, 6, 0, 1 };
-//	GLfloat up[] = { 0, 1, 0, 1 };
-//	GLfloat look[] = { 0, 0, 0, 1 };
-//
-//	eye[0] += ship.mat[0][3];
-//	eye[1] += ship.mat[1][3];
-//	eye[2] += ship.mat[2][3];
-//	look[0] += eye[0] + ship.mat[0][0];
-//	look[1] += eye[1] + ship.mat[1][0];
-//	look[2] += eye[2] + ship.mat[2][0];
-//
-//	ship.multiply_vector(eye);
-////	ship.multiply_vector(up);
-////	ship.multiply_vector(look);
-//
-//	this->eye.set(eye[0], eye[1], eye[2]);
-//	this->viewup.set(up[0], up[1], up[2]);
-//	this->ref.set(look[0], look[1], look[2]);
-//	setProjectionMatrix(); // calls gluLookAt with eye, viewup and ref
-//}
-
-
