@@ -43,9 +43,9 @@ void Universe::draw_world() {
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, matDif);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, matSpec);
 	glMaterialfv(GL_FRONT, GL_EMISSION, matEm);
+	//myCamera->followShip(ship.getMC());
 	ship.draw();
 	lightSource->draw();
-	myCamera->followShip(ship.getMC());
 	glFlush();
 	glutSwapBuffers();
 }
@@ -59,25 +59,18 @@ void Universe::normalizeAll() {
 	}
 	ship.normalize();
 }
-void animateSolarHelper(int pointerToWorld) {
-	((Universe*) pointerToWorld)->animateSolar();
+void clockHelper(int pointerToWorld) {
+	((Universe*) pointerToWorld)->clock();
 }
-void Universe::animateSolar() {
+void Universe::clock() {
 	static DWORD start, end;
 	start = GetTickCount();
-	sun->rotate_mc(0, -1, 0, 0.00000000005 * (end - start));
-	earth->rotate_mc(.2, .7, 0, 3);
-	earth->rotate_origin(0, -1, 0, 0.00000000005 * (end - start));
-	moon->rotate_origin(0, -1, 0, 0.00000000005 * (end - start));
-	moon->rotate_relative(earth->getMC().mat[0][3], earth->getMC().mat[1][3], earth->getMC().mat[2][3], 0, 1, 0,
-			0.0000000003 * (end - start));
+
+	ship.tick();
+
 	glutPostRedisplay();
-	glutTimerFunc(10, animateSolarHelper, (int) this);
+	glutTimerFunc(10, clockHelper, (int) this);
 	end = GetTickCount();
 	glutPostRedisplay();
-}
-
-Spaceship Universe::getShip(){
-	return ship;
 }
 

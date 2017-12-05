@@ -40,26 +40,28 @@ void mouseAction(int button, int state, int x, int y) {
 }
 
 void standardKeys(unsigned char key, int x, int y) {
-	if (key == 'w') { // accelerate
-		cout << "w" << endl;
-	} else if (key == 'a') { // turn left
-		myUniverse->getShip().rotate_mc(0,1,0,5);
-	} else if (key == 's') { // break
-		cout << "s" << endl;
-	} else if (key == 'd') { // turn right
-		myUniverse->getShip().rotate_mc(0,1,0,-5);
+
+	if (key == 'w') {
+		myUniverse->ship.up();
+	} else if (key == 'a') {
+		myUniverse->ship.left();
+	} else if (key == 's') {
+		myUniverse->ship.down();
+	} else if (key == 'd') {
+		myUniverse->ship.right();
 	}
+	glutPostRedisplay();
 }
 
 void specialKeys(int key, int x, int y) {
-	if (key == GLUT_KEY_LEFT) { // roll left
-		cout << "left" << endl;
-	} else if (key == GLUT_KEY_RIGHT) { // roll right
-		cout << "right" << endl;
-	} else if (key == GLUT_KEY_UP) { // pitch fwd
-		cout << "up" << endl;
-	} else if (key == GLUT_KEY_DOWN) { // pitch backward
-		cout << "down" << endl;
+	if (key == GLUT_KEY_LEFT) {
+		myUniverse->ship.left();
+	} else if (key == GLUT_KEY_RIGHT) {
+		myUniverse->ship.right();
+	} else if (key == GLUT_KEY_UP) {
+		myUniverse->ship.up();
+	} else if (key == GLUT_KEY_DOWN) {
+		myUniverse->ship.down();
 	}
 }
 
@@ -104,6 +106,7 @@ int main(int argc, char** argv) {
 	glutKeyboardFunc(standardKeys);
 	glutSpecialFunc(specialKeys);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	myUniverse->clock(); // start the animations
 	glutMainLoop();
 
 	delete myUniverse;

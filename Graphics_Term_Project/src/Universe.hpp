@@ -22,14 +22,14 @@ public:
 	void draw_world(); // draw all objects in the world
 	void normalizeAll();
 	PointLightSource *lightSource;
-	void animateSolar();
+	void clock();
 	GLint stepRotation, totalRotation, bezCurveRes; // Parameters to control the rotation and smoothness of the curve
-	Spaceship getShip();
+	Spaceship ship;
 private:
 	Sphere *sun, *moon, *earth; // shapes for the solar system
 	BezierCurve* curve;
 	PointLightSource *sunLight;
-	Spaceship ship;
+
 };
 
 #endif

@@ -93,7 +93,7 @@ void Matrix::multiply_vector(GLfloat* v) {
 	for (int i = 0; i < 4; i++) {
 		sum = 0;
 		for (int j = 0; j < 4; j++) {
-			sum += v[j] * this->mat[i][j];
+			sum += v[j] * this->mat[j][i];
 		}
 		temp[i] = sum;
 	}

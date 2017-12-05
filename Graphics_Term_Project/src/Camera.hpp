@@ -39,6 +39,7 @@ class Camera {
 	void setProjectionMatrix();
 	Vector getViewVector();
 	void followShip(Matrix ship);
+	void rotate_relative(double x0, double y0, double z0, double rx, double ry, double rz, double angle);
 };
 #endif
 
