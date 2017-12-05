@@ -21,10 +21,11 @@ public:
 	void vert(char);
 	void horiz(char);
 	void tick(DWORD ticks);
+	GLfloat vy,vz;
 private:
 	Prism *leftUpperWing, *rightUpperWing, *leftLowerWing, *rightLowerWing;
 	BezierCurve *body;
-	GLfloat vy,vz;
+
 };
 
 #endif /* SPACESHIP_HPP_ */

@@ -106,5 +106,5 @@ void Vector::setAs2DNormal(Point p1, Point p2){
 	normalize();
 }
 GLfloat Vector::angleFromPosZinYZPlane(){
-	return atan(y/z);
+	return atan(y/z) * 180/3.14159;
 }

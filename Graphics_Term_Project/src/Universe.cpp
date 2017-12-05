@@ -121,11 +121,16 @@ bool Universe::checkCollision(LightOrb* o) {
 		}
 		Vector bodyToCircle = Vector(0, ov.y - sv.y, ov.z - sv.z); // vector from the body of the plane to the circle, 2d
 		GLfloat angle = bodyToCircle.angleFromPosZinYZPlane();
-		float angleTolerance = 3.0;
-		if ((angle > 20 - angleTolerance && angle < 20 + angleTolerance)
-				|| (angle > -20 - angleTolerance && angle < -20 + angleTolerance)
-				|| (angle > 160 - angleTolerance && angle < 160 + angleTolerance)
-				|| (angle > 200 - angleTolerance && angle < 200 + angleTolerance)) {
+		cout << angle << endl;
+		float angleTolerance = 10;
+		float tilt = 0;
+		if (ship.vz > 0){
+			tilt = 20;
+		}else if (ship.vz < 0){
+			tilt = -20;
+		}
+		if ((angle > 20 - angleTolerance+tilt && angle < 20 + angleTolerance+tilt)
+				|| (angle > -20 - angleTolerance+tilt && angle < -20 + angleTolerance+tilt)) {
 			//hit a wing, aproximately
 			return true;
 		}
