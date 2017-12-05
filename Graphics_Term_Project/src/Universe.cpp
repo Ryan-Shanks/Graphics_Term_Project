@@ -10,9 +10,10 @@ Universe::Universe() {
 	/**
 	 * opengl only supports 8 lights in the way we use them. Need to keep track of which are already taken so we dont take them again.
 	 */
-	for (int i =0; i < 9; i++){
-		lightsAvailable.push_back(8-i);
+	for (int i = 0; i < 9; i++) {
+		lightsAvailable.push_back(8 - i);
 	}
+	collision = false;
 }
 
 Universe::~Universe() {
@@ -30,7 +31,7 @@ void Universe::draw_world() {
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, matDif);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, matSpec);
 	glMaterialfv(GL_FRONT, GL_EMISSION, matEm);
-	glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, 100);
+	glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, 125);
 	ship.draw();
 	for (std::list<LightOrb*>::const_iterator iterator = orbs.begin(), end = orbs.end(); iterator != end; ++iterator) {
 		(*iterator)->draw();
@@ -50,34 +51,37 @@ void Universe::clock() {
 	static DWORD start, end;
 	start = GetTickCount();
 	DWORD ticks = end - start;
+	keys();
 	if (orbs.size() < sqrt(orbsPassed) || orbs.size() == 0) {
 		//create a new orb
-		GLfloat startx = -3.0f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (6.0f)));
-		GLfloat starty = -3.0f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (6.0f)));
+		GLfloat startx = -5.0f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (10.0f)));
+		GLfloat starty = -5.0f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (10.0f)));
 
 		//choose a color
 		int c = rand() % 5;
-		GLfloat r,g,b;
-		switch (c){
-			case 0:
-				r = 1,g=0,b=0;
-				break;
-			case 1:
-				r=0, g=1, b=0;
-				break;
-			case 2:
-				r = 0,g=0,b=1;
-				break;
-			case 3:
-				r=1,g=1,b=0;
-				break;
-			case 4:
-				r=0,g=1,b=1;
-				break;
-			case 5:
-				r=1,g=0,b=1;
+		GLfloat r, g, b;
+		switch (c) {
+		case 0:
+			r = 1, g = 0, b = 0;
+			break;
+		case 1:
+			r = 0, g = 1, b = 0;
+			break;
+		case 2:
+			r = 0, g = 0, b = 1;
+			break;
+		case 3:
+			r = 1, g = 1, b = 0;
+			break;
+		case 4:
+			r = 0, g = 1, b = 1;
+			break;
+		case 5:
+			r = 1, g = 0, b = 1;
 		}
-		orbs.push_back(new LightOrb(startx, starty, r, g, b, &lightsAvailable));
+		float speedFactor = 1.0
+				+ static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (1.0f + sqrt(orbsPassed))));
+		orbs.push_back(new LightOrb(startx, starty, r, g, b, &lightsAvailable, speedFactor));
 		cout << "new orb" << endl;
 	}
 	for (std::list<LightOrb*>::const_iterator iterator = orbs.begin(), end = orbs.end(); iterator != end; ++iterator) {
@@ -86,7 +90,10 @@ void Universe::clock() {
 
 	for (std::list<LightOrb*>::const_iterator iterator = orbs.begin(), end = orbs.end(); iterator != end; ++iterator) {
 		(*iterator)->tick(ticks);
-		if ((*iterator)->getMC().mat[0][3] < 0){
+		if (checkCollision(*iterator)) {
+			collision = true;
+		}
+		if ((*iterator)->getMC().mat[0][3] < 0) {
 			//it has passed, delete
 			delete *iterator;
 			orbs.remove(*iterator);
@@ -94,8 +101,59 @@ void Universe::clock() {
 		}
 	}
 	ship.tick(ticks);
-
-	glutTimerFunc(10, clockHelper, (int) this);
+	keys();
+	if (!collision) {
+		glutTimerFunc(10, clockHelper, (int) this);
+	}
 	end = GetTickCount();
 	glutPostRedisplay();
+}
+
+bool Universe::checkCollision(LightOrb* o) {
+	Vector ov = o->getMC().getPosVect();
+	Vector sv = ship.getMC().getPosVect();
+	float radius = 0.5;
+	if (ov.x < 2 && ov.x > 0) { // if its too far or too close it could not have hit the ship
+	//check the body first, it has a radius of 1 and the orbs have .5
+		if (sqrt(pow(sv.y - ov.y, 2) + pow(sv.z - ov.z, 2) < 1 + radius)) {
+			//hit the body
+			return true;
+		}
+		Vector bodyToCircle = Vector(0, ov.y - sv.y, ov.z - sv.z); // vector from the body of the plane to the circle, 2d
+		GLfloat angle = bodyToCircle.angleFromPosZinYZPlane();
+		float angleTolerance = 3.0;
+		if ((angle > 20 - angleTolerance && angle < 20 + angleTolerance)
+				|| (angle > -20 - angleTolerance && angle < -20 + angleTolerance)
+				|| (angle > 160 - angleTolerance && angle < 160 + angleTolerance)
+				|| (angle > 200 - angleTolerance && angle < 200 + angleTolerance)) {
+			//hit a wing, aproximately
+			return true;
+		}
+	}
+	return false;
+}
+
+void Universe::keys() {
+	BYTE mask = 0b10000000;
+	bool u, d, l, r;
+	u = (GetAsyncKeyState('W') && mask) || (GetAsyncKeyState(VK_UP) && mask);
+	d = (GetAsyncKeyState('S') && mask) || (GetAsyncKeyState(VK_DOWN) && mask);
+	l = (GetAsyncKeyState('A') && mask) || (GetAsyncKeyState(VK_LEFT) && mask);
+	r = (GetAsyncKeyState('D') && mask) || (GetAsyncKeyState(VK_RIGHT) && mask);
+
+	if (u && !d) {
+		ship.vert(1);
+	} else if (d && !u) {
+		ship.vert(-1);
+	} else {
+		ship.vert(0);
+	}
+
+	if (l && !r) {
+		ship.horiz(1);
+	} else if (r && !l) {
+		ship.horiz(-1);
+	} else {
+		ship.horiz(0);
+	}
 }

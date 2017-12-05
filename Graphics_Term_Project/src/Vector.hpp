@@ -23,6 +23,7 @@ class Vector {
 	void add(Vector other);
 	Vector averageVect(Vector other);
 	void setAs2DNormal(Point p1, Point p2);
+	GLfloat angleFromPosZinYZPlane();
 };
 
 #endif

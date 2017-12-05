@@ -18,10 +18,8 @@ public:
 	Spaceship();
 	virtual ~Spaceship();
 	void draw();
-	void up();
-	void down();
-	void left();
-	void right();
+	void vert(char);
+	void horiz(char);
 	void tick(DWORD ticks);
 private:
 	Prism *leftUpperWing, *rightUpperWing, *leftLowerWing, *rightLowerWing;

@@ -12,8 +12,26 @@
 #include "MenuHandler.hpp"
 #include "Sphere.hpp"
 #include "Universe.hpp"
+#include <sstream>
+#include <cstdlib>
 
 void display(void) {
+	if (myUniverse->collision){
+		//game over
+		Beep(500,500);
+		Beep(400,500);
+		Beep(300,500);
+		stringstream message;
+		message << "You dodged " << myUniverse->orbsPassed << " orbs! Would you like to play again?" << endl;
+		if (::MessageBoxA(GetActiveWindow(), message.str().c_str(), "You Lose!", MB_YESNO) == 6){
+			//replay
+			delete myUniverse;
+			myUniverse = new Universe();
+			myUniverse->clock(); // start the animations
+		}else{
+			exit(0);
+		}
+	}
 	myUniverse->myCamera->aspect = ((GLfloat) glutGet(GLUT_WINDOW_WIDTH))
 			/ (glutGet(GLUT_WINDOW_HEIGHT) == 0 ? 0.01 : glutGet(GLUT_WINDOW_HEIGHT));
 	myUniverse->myCamera->setProjectionMatrix();
@@ -28,58 +46,13 @@ void winReshapeFcn(GLint newWidth, GLint newHeight) {
 	winHeight = newHeight;
 }
 
-void mouseAction(int button, int state, int x, int y) {
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		moving = true;
-		xBegin = x;
-	}
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-		moving = 0;
-		myUniverse->normalizeAll();
-	}
-}
-
-void standardKeys(unsigned char key, int x, int y) {
-
-	if (key == 'w') {
-		myUniverse->ship.up();
-	} else if (key == 'a') {
-		myUniverse->ship.left();
-	} else if (key == 's') {
-		myUniverse->ship.down();
-	} else if (key == 'd') {
-		myUniverse->ship.right();
-	}
-	glutPostRedisplay();
-}
-
-void specialKeys(int key, int x, int y) {
-	if (key == GLUT_KEY_LEFT) {
-		myUniverse->ship.left();
-	} else if (key == GLUT_KEY_RIGHT) {
-		myUniverse->ship.right();
-	} else if (key == GLUT_KEY_UP) {
-		myUniverse->ship.up();
-	} else if (key == GLUT_KEY_DOWN) {
-		myUniverse->ship.down();
-	}
-}
-
-void mouseMotion(GLint x, GLint y) {
-	//GLfloat rx, ry, rz, theta;
-	if (moving) {
-		glutPostRedisplay();
-	}
-
-}
-
 int main(int argc, char** argv) {
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(winWidth, winHeight);
-	glutCreateWindow("A4 Ryan Shanks)");
+	glutCreateWindow("LightSpeed");
 
 	myUniverse = new Universe();
 	createMenu();
@@ -92,7 +65,7 @@ int main(int argc, char** argv) {
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHTING);
 
 	glewInit();
 	GLuint SLProgramObject = InitShader("src/vertexshader.txt", "src/fragmentshader.txt");
@@ -102,10 +75,6 @@ int main(int argc, char** argv) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 	glutDisplayFunc(display);
-	glutMotionFunc(mouseMotion);
-	glutMouseFunc(mouseAction);
-	glutKeyboardFunc(standardKeys);
-	glutSpecialFunc(specialKeys);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	myUniverse->clock(); // start the animations
 	glutMainLoop();

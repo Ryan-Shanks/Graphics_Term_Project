@@ -7,8 +7,8 @@
 
 #include "LightOrb.hpp"
 
-LightOrb::LightOrb(GLfloat starty, GLfloat startz, GLfloat r, GLfloat g, GLfloat b, vector<int> *lightsAvail) {
-	speed = -.00000000005;
+LightOrb::LightOrb(GLfloat starty, GLfloat startz, GLfloat r, GLfloat g, GLfloat b, vector<int> *lightsAvail, float speedFactor) {
+	speed = -.000000000025*speedFactor;
 	lightNo = -1;
 	translate(100, starty, startz);
 	this->r = r;

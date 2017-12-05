@@ -16,7 +16,7 @@
 class LightOrb: public Shape {
 
 public:
-	LightOrb(GLfloat starty, GLfloat startz, GLfloat r, GLfloat g, GLfloat b, vector<int> *lightsAvail);
+	LightOrb(GLfloat starty, GLfloat startz, GLfloat r, GLfloat g, GLfloat b, vector<int> *lightsAvail, float speedFactor);
 	~LightOrb();
 	void draw();
 	Vector getLightPos();

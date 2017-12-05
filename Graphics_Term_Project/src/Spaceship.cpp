@@ -16,9 +16,13 @@ Spaceship::Spaceship() {
 	body->setDrawingMode(GLSL_SHADE);
 	//body->rotate_mc(0, 1, 0, 90);
 	vector<Point> wingPoints;
-	wingPoints.push_back(Point(0.5, 0, 2));
-	wingPoints.push_back(Point(2, 0, 2));
-	wingPoints.push_back(Point(2, 0, 0));
+	wingPoints.push_back(Point(1, 0, 2));
+	wingPoints.push_back(Point(0.5, 0, 1.5));
+
+	wingPoints.push_back(Point(1.5, 0, 2));
+	wingPoints.push_back(Point(2, 0, 1.5));
+	wingPoints.push_back(Point(1.5, 0, 0));
+	//wingPoints.push_back(Point(2, 0, 0));
 	wingPoints.push_back(Point(0.5, 0, 0));
 
 	// add the wings
@@ -54,7 +58,7 @@ void Spaceship::draw() {
 	}else if (vz < 0){
 		tilt.rotate(1,0,0,-20);
 	}
-
+	glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, 75);
 	glPushMatrix();
 	ctm_multiply();
 	tilt.ctm_multiply();
@@ -66,18 +70,14 @@ void Spaceship::draw() {
 	glPopMatrix();
 }
 
-void Spaceship::up() {
-	vy= 0.00000000003;
+void Spaceship::vert(char d) {
+	vy= d*0.00000000003;
 }
-void Spaceship::down() {
-	vy = -0.00000000003;
+
+void Spaceship::horiz(char d) {
+	vz = d*-0.00000000003;
 }
-void Spaceship::left() {
-	vz = -0.00000000003;
-}
-void Spaceship::right() {
-	vz = 0.00000000003;
-}
+
 void Spaceship::tick(DWORD ticks){
 	if(mc.mat[1][3] > 3){
 		vy = 0;

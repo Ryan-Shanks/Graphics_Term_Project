@@ -25,8 +25,11 @@ public:
 	Spaceship ship;
 	int orbsPassed;
 	vector<int> lightsAvailable;
+	bool collision;
+	void keys();
 private:
 	std::list<LightOrb*> orbs;
+	bool checkCollision(LightOrb *o);
 };
 
 #endif
