@@ -129,8 +129,8 @@ bool Universe::checkCollision(LightOrb* o) {
 		}else if (ship.vz < 0){
 			tilt = -20;
 		}
-		if ((angle > 20 - angleTolerance+tilt && angle < 20 + angleTolerance+tilt)
-				|| (angle > -20 - angleTolerance+tilt && angle < -20 + angleTolerance+tilt)) {
+		if (((angle > 20 - angleTolerance+tilt && angle < 20 + angleTolerance+tilt)
+				|| (angle > -20 - angleTolerance+tilt && angle < -20 + angleTolerance+tilt)) &&bodyToCircle.magnitude() <=2) {
 			//hit a wing, aproximately
 			return true;
 		}
