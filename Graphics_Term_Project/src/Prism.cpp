@@ -48,6 +48,10 @@ void Prism::draw() {
 	for (unsigned i =0; i <= points.size(); i++){
 		GLfloat n[4];
 		normalsOnSideFaces[wrapPoints(i)].build4tuple(n);
+		if(n[0] < 0.3){
+			//make the back really bright
+			n[0] = 2;
+		}
 		glNormal3fv(n);
 		glVertex3f(points[wrapPoints(i)].x, height/2, points[wrapPoints(i)].z);
 		glVertex3f(points[wrapPoints(i)].x, -height/2, points[wrapPoints(i)].z);

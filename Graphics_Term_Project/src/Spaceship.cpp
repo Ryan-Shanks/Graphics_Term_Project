@@ -16,9 +16,8 @@ Spaceship::Spaceship() {
 	body->setDrawingMode(GLSL_SHADE);
 	//body->rotate_mc(0, 1, 0, 90);
 	vector<Point> wingPoints;
-	wingPoints.push_back(Point(1, 0, 2));
 	wingPoints.push_back(Point(0.5, 0, 1.5));
-
+	wingPoints.push_back(Point(1, 0, 2));
 	wingPoints.push_back(Point(1.5, 0, 2));
 	wingPoints.push_back(Point(2, 0, 1.5));
 	wingPoints.push_back(Point(1.5, 0, 0));
