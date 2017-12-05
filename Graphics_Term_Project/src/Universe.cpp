@@ -23,9 +23,9 @@ Universe::~Universe() {
 void Universe::draw_world() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//materials for the ship
-	GLfloat matAmb[] = { 0.2, .2, .2, 1.0 }; //ambient
+	GLfloat matAmb[] = { 0.1, .1, .1, 1.0 }; //ambient
 	GLfloat matDif[] = { 0.8, .8, 0.8, 1.0 }; //diffuse
-	GLfloat matSpec[] = { 0.0, 0.0, 0.0, 1.0 }; //specular
+	GLfloat matSpec[] = { 0.3, 0.3, 0.3, 1.0 }; //specular
 	GLfloat matEm[] = { 0, 0, 0, 1 }; //emission, make the axis always bright
 	glMaterialfv(GL_FRONT, GL_AMBIENT, matAmb);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, matDif);
