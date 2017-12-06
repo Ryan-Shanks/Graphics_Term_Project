@@ -59,7 +59,7 @@ void Universe::clock() {
 
 		//choose a color
 		int c = rand() % 5;
-		GLfloat r, g, b;
+		GLfloat r=0, g=0, b=0;
 		switch (c) {
 		case 0:
 			r = 1, g = 0, b = 0;
@@ -82,7 +82,7 @@ void Universe::clock() {
 		float speedFactor = 1.0
 				+ static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (1.0f + sqrt(orbsPassed))));
 		orbs.push_back(new LightOrb(startx, starty, r, g, b, &lightsAvailable, speedFactor));
-		cout << "new orb" << endl;
+		//cout << "new orb" << endl;
 	}
 	for (std::list<LightOrb*>::const_iterator iterator = orbs.begin(), end = orbs.end(); iterator != end; ++iterator) {
 		(*iterator)->tick(ticks);
@@ -93,7 +93,7 @@ void Universe::clock() {
 		if (checkCollision(*iterator)) {
 			collision = true;
 		}
-		if ((*iterator)->getMC().mat[0][3] < 0) {
+		if ((*iterator)->getMC().mat[0][3] < -10) {
 			//it has passed, delete
 			delete *iterator;
 			orbs.remove(*iterator);
@@ -113,7 +113,7 @@ bool Universe::checkCollision(LightOrb* o) {
 	Vector ov = o->getMC().getPosVect();
 	Vector sv = ship.getMC().getPosVect();
 	float radius = 0.5;
-	if (ov.x < 2 && ov.x > 0) { // if its too far or too close it could not have hit the ship
+	if (ov.x < 1.5 && ov.x > 0) { // if its too far or too close it could not have hit the ship
 	//check the body first, it has a radius of 1 and the orbs have .5
 		if (sqrt(pow(sv.y - ov.y, 2) + pow(sv.z - ov.z, 2) < 1 + radius)) {
 			//hit the body
@@ -121,7 +121,7 @@ bool Universe::checkCollision(LightOrb* o) {
 		}
 		Vector bodyToCircle = Vector(0, ov.y - sv.y, ov.z - sv.z); // vector from the body of the plane to the circle, 2d
 		GLfloat angle = bodyToCircle.angleFromPosZinYZPlane();
-		cout << angle << endl;
+		//cout << angle << endl;
 		float angleTolerance = 10;
 		float tilt = 0;
 		if (ship.vz > 0){

@@ -74,7 +74,4 @@ void LightOrb::tick(DWORD ticks) {
 		lightNo = (*lightsAvail)[lightsAvail->size() - 1];
 		lightsAvail->pop_back();
 	}
-	if (mc.mat[0][3] < 3) {
-		//TODO check for collision
-	}
 }
